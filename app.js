@@ -11,9 +11,6 @@
  *
  */
 
-const userData = require("./src/database/userData.json");
-const quizData = require("./src/database/quizData.json");
-
 const mysql = require("mysql");
 
 const express = require("express");
@@ -25,11 +22,11 @@ app.use(cors());
 
 // Verbindung zur Datenbank herstellen
 const connection = mysql.createConnection({
-  host: "localhost", // Hostname Datenbank
-  port: "3302", // Portname
-  user: "root", // Benutzername
-  password: "EinsteinNo1", // Passwort
-  database: "iu_project_schema", // Name Datenbank
+  host: "database-1.cf8u260est2h.eu-central-1.rds.amazonaws.com", // Hostname Datenbank
+  port: "3306", // Portname
+  user: "admin", // Benutzername
+  password: "iu-projekt", // Passwort
+  database: "iu_test_database", // Name Datenbank
 });
 
 // Verbindung herstellen
@@ -45,7 +42,7 @@ connection.connect(function (err) {
 });
 
 // Beispielabfrage ausführen
-connection.query("SELECT * FROM fragen", (error, results, fields) => {
+connection.query("SELECT * FROM questions", (error, results, fields) => {
   if (error) {
     console.error("Fehler bei der Abfrage:", error);
     return;
