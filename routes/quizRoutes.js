@@ -5,32 +5,33 @@
  *	Erstellungsdatum:	04-03-2024
  *	Info/Notizen:		Auslagerung aller Quiz-Anfragen an die API
  *
- *	Editiert von:     
- *	Editiert am:      
- *	Info/Notizen:     
+ *	Editiert von:
+ *	Editiert am:
+ *	Info/Notizen:
  *
  */
 
 const express = require("express");
 const router = express.Router();
 
-// Endpoint zum Abrufen eines bestimmten Quiz
-router.get("/:quizId", (req, res, next) => {
-  const quizId = req.params.quizId;
-  const quiz = quizData.find((quiz) => quiz.id === parseInt(quizId));
-
-  if (quiz) {
-    res.json(quiz);
-  } else {
-    const error = new Error("Quiz nicht gefunden");
-    error.status = 404;
-    next(error);
-  }
+// GET-Anfrage zum Abrufen aller Antworten
+router.get("/answers", (req, res, next) => {
+  req.db.query("SELECT * FROM answers", (error, results, fields) => {
+    if (error) {
+      return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+    }
+    res.json(results); // Ergebnis als JSON zurückgeben
+  });
 });
 
-// Endpoint zum Abrufen der Quizdaten
-router.get("/", (req, res) => {
-  res.json(quizData);
+// GET-Anfrage zum Abrufen aller Antworten
+router.get("/questions", (req, res, next) => {
+  req.db.query("SELECT * FROM questions", (error, results, fields) => {
+    if (error) {
+      return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+    }
+    res.json(results); // Ergebnis als JSON zurückgeben
+  });
 });
 
 module.exports = router;
