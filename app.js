@@ -5,14 +5,16 @@
  *	Erstellungsdatum:	03-29-2024
  *	Info/Notizen:		  Express-App, definiert das Backend
  *
- *	Editiert von:
- *	Editiert am:
- *	Info/Notizen:
+ *	Editiert von:     Kevin Krazius
+ *	Editiert am:      04-03-2024
+ *	Info/Notizen:     MySQL Installed and connected
  *
  */
 
 const userData = require("./src/database/userData.json");
 const quizData = require("./src/database/quizData.json");
+
+const mysql = require("mysql");
 
 const express = require("express");
 const app = express();
@@ -20,6 +22,42 @@ const cors = require("cors");
 const port = 3001;
 
 app.use(cors());
+
+// Verbindung zur Datenbank herstellen
+const connection = mysql.createConnection({
+  host: "localhost", // Hostname Datenbank
+  port: "3302", // Portname
+  user: "root", // Benutzername
+  password: "EinsteinNo1", // Passwort
+  database: "iu_project_schema", // Name Datenbank
+});
+
+// Verbindung herstellen
+connection.connect(function (err) {
+  if (err) {
+    console.error("Fehler beim Verbinden zur Datenbank: " + err.stack);
+    return;
+  }
+
+  console.log(
+    "Verbindung zur Datenbank hergestellt mit der ID " + connection.threadId
+  );
+});
+
+// Beispielabfrage ausführen
+connection.query("SELECT * FROM fragen", (error, results, fields) => {
+  if (error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return;
+  }
+  console.log("Abfrageergebnis:", results);
+});
+
+// Verbindung schließen, wenn die App beendet wird
+process.on("SIGINT", () => {
+  connection.end();
+  console.log("Verbindung zur Datenbank geschlossen");
+});
 
 // Endpoint zum Abrufen eines bestimmten Benutzers
 app.get("/user/:userId", (req, res) => {
