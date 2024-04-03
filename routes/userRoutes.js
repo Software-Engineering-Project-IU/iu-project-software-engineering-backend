@@ -13,7 +13,16 @@
 
 const express = require("express");
 const router = express.Router();
-const userData = require("../src/database/userData.json");
+
+// GET-Anfrage zum Abrufen aller Benutzer
+router.get("/", (req, res, next) => {
+    req.db.query("SELECT * FROM users", (error, results, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+      res.json(results); // Ergebnis als JSON zurückgeben
+    });
+  });
 
 // Endpoint zum Abrufen eines bestimmten Benutzers
 router.get("/:userId", (req, res, next) => {
@@ -27,11 +36,6 @@ router.get("/:userId", (req, res, next) => {
     error.status = 404;
     next(error);
   }
-});
-
-// Endpoint zum Abrufen der Benutzerdaten
-router.get("/", (req, res) => {
-  res.json(userData);
 });
 
 module.exports = router;

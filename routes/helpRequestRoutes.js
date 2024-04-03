@@ -13,7 +13,6 @@
 
  const express = require("express");
 const router = express.Router();
-const quizData = require("../src/database/quizData.json");
 
 // Endpoint zum Abrufen von Hilfsanfragen
 router.get("/", (req, res) => {
