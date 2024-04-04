@@ -24,7 +24,7 @@ router.get("/answers", (req, res, next) => {
   });
 });
 
-// GET-Anfrage zum Abrufen aller Antworten
+// GET-Anfrage zum Abrufen aller Fragen
 router.get("/questions", (req, res, next) => {
   req.db.query("SELECT * FROM questions", (error, results, fields) => {
     if (error) {
@@ -32,6 +32,36 @@ router.get("/questions", (req, res, next) => {
     }
     res.json(results); // Ergebnis als JSON zurückgeben
   });
+});
+
+// Get-Anfrage zum Abrufen aller Infos zu spezifischer Frage
+router.get("/questions/:id", (req, res, next) => {
+  const id = req.params.id;
+  req.db.query(
+    "SELECT * FROM questions WHERE id = ?",
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+      res.json(results); // Ergebnis als JSON zurückgeben
+    }
+  );
+});
+
+// Get-Anfrage zum Abrufen aller Infos zu spezifischer Antwort
+router.get("/answers/:id", (req, res, next) => {
+  const id = req.params.id;
+  req.db.query(
+    "SELECT * FROM answers WHERE question_id = ?",
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+      res.json(results); // Ergebnis als JSON zurückgeben
+    }
+  );
 });
 
 module.exports = router;
