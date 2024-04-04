@@ -3,11 +3,11 @@
  *
  *	Ersteller:		    Kevin Krazius
  *	Erstellungsdatum:	04-03-2024
- *	Info/Notizen:		Auslagerung aller Quiz-Anfragen an die API
+ *	Info/Notizen:		  Auslagerung aller Quiz-Anfragen an die API
  *
- *	Editiert von:
- *	Editiert am:
- *	Info/Notizen:
+ *	Editiert von:     Kevin Krazius
+ *	Editiert am:      04-04-2024
+ *	Info/Notizen:     Anfragen für spezifische Fragen und Antworten implementiert
  *
  */
 
