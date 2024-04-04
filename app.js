@@ -7,14 +7,14 @@
  *
  *	Editiert von:     Kevin Krazius
  *	Editiert am:      04-03-2024
- *	Info/Notizen:     MySQL Installed and connected - Auslagerung der einzelnen API-Anfragen
+ *	Info/Notizen:     MySQL Installed and connected - AWS RDS - Auslagerung der einzelnen API-Anfragen
  *
  */
 
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const morgan = require("morgan");
+//const morgan = require("morgan");
 const mysql = require("mysql");
 
 const userRoutes = require("./routes/userRoutes");
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 // Routen
 app.use("/users", userRoutes);
 app.use("/quiz", quizRoutes);
-app.use("/helpRequests", helpRequestRoutes);
+app.use("/help_requests", helpRequestRoutes);
 
 // Fehlerbehandlung für nicht gefundene Routen
 app.use((req, res, next) => {

@@ -20,6 +20,7 @@ router.get("/", (req, res, next) => {
     if (error) {
       return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
     }
+    console.log(results);
     res.json(results); // Ergebnis als JSON zurückgeben
   });
 });
