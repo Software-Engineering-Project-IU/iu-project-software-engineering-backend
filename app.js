@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 // Routen
 app.use("/users", userRoutes);
 app.use("/quiz", quizRoutes);
-app.use("/help_requests", helpRequestRoutes);
+app.use("/help-requests", helpRequestRoutes);
 
 // Fehlerbehandlung für nicht gefundene Routen
 app.use((req, res, next) => {
