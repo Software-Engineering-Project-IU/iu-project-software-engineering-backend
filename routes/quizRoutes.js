@@ -64,4 +64,38 @@ router.get("/answers/:id", (req, res, next) => {
   );
 });
 
+// PUT-Anfrage zum Aktualisieren einer Frage
+router.put("/update-questions/:id", (req, res, next) => {
+  const id = req.params.id;
+  const { question_text, module_name } = req.body;
+
+  req.db.query(
+    "UPDATE questions SET question_text = ?, module_name = ? WHERE id = ?",
+    [question_text, module_name, id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+      res.sendStatus(204); // Erfolgsstatus zurückgeben
+    }
+  );
+});
+
+// PUT-Anfrage zum Aktualisieren einer Antwort
+router.put("/update-answers/:id", (req, res, next) => {
+  const id = req.params.id;
+  const { answer_text, is_correct } = req.body;
+
+  req.db.query(
+    "UPDATE answers SET answer_text = ?, is_correct = ? WHERE id = ?",
+    [answer_text, is_correct, id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+      res.sendStatus(204); // Erfolgsstatus zurückgeben
+    }
+  );
+});
+
 module.exports = router;
