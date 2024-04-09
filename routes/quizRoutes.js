@@ -98,4 +98,57 @@ router.put("/update-answers/:id", (req, res, next) => {
   );
 });
 
+// PUT-Anfrage zum aktualisieren einer Frage bezüglich is_help_needed
+router.put("/help-needed/:id", (req, res, next) => {
+  const id = req.params.id;
+  const { is_help_needed, user_needing_help } = req.body;
+  console.log(user_needing_help);
+  req.db.query(
+    "UPDATE questions SET is_help_needed = ?, user_needing_help = ? WHERE id = ?",
+    [is_help_needed, user_needing_help, id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error);
+      }
+      res.sendStatus(204);
+    }
+  );
+});
+
+// POST-Anfrage zum Erstellen einer neuen Frage und Antworten
+router.post("/create-question", (req, res, next) => {
+  const { question_text, module_name, answers } = req.body;
+  const is_help_needed = false;
+  // Zuerst die Frage in die Datenbank einfügen
+  req.db.query(
+    "INSERT INTO questions (question_text, module_name, is_help_needed) VALUES (?, ?, ?)",
+    [question_text, module_name, is_help_needed],
+    (error, questionResults, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+
+      const questionId = questionResults.insertId;
+
+      // Dann die Antworten in die Datenbank einfügen, indem Sie eine Schleife verwenden, um alle Antworten zu verarbeiten
+      const answerValues = answers.map(({ text, isCorrect }) => [
+        text,
+        isCorrect,
+        questionId, // Verweisen auf die ID der neu erstellten Frage
+      ]);
+
+      req.db.query(
+        "INSERT INTO answers (answer_text, is_correct, question_id) VALUES ?",
+        [answerValues],
+        (error, answerResults, fields) => {
+          if (error) {
+            return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+          }
+          res.sendStatus(201); // Erfolgsstatus für die neu erstellte Frage zurückgeben
+        }
+      );
+    }
+  );
+});
+
 module.exports = router;

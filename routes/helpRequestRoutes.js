@@ -39,6 +39,21 @@ router.post("/:id/helpful", (req, res, next) => {
   );
 });
 
+// POST-Anfrage zum Aktualisieren des Status von provided_help
+router.post("/provide-help", (req, res, next) => {
+  const { user_id, question_id, provided_help } = req.body;
+
+  req.db.query(
+    "INSERT INTO help_requests (user_id, question_id, provided_help) VALUES (?, ?, ?)",
+    [user_id, question_id, provided_help],
+    (error, questionResults, fields) => {
+      if (error) {
+        return next(error); // Fehler an die zentrale Fehlerbehandlung weiterleiten
+      }
+    }
+  );
+});
+
 // DELETE-Anfrage zum Löschen einer Hilfsanfrage
 router.delete("/:id/delete", (req, res, next) => {
   const requestId = req.params.id;
