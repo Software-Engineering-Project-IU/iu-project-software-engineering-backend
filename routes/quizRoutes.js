@@ -102,7 +102,6 @@ router.put("/update-answers/:id", (req, res, next) => {
 router.put("/help-needed/:id", (req, res, next) => {
   const id = req.params.id;
   const { is_help_needed, user_needing_help } = req.body;
-  console.log(user_needing_help);
   req.db.query(
     "UPDATE questions SET is_help_needed = ?, user_needing_help = ? WHERE id = ?",
     [is_help_needed, user_needing_help, id],
