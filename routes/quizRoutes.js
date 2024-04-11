@@ -114,6 +114,22 @@ router.put("/help-needed/:id", (req, res, next) => {
   );
 });
 
+// PUT-Anfrage zum aktualisieren einer Frage bezüglich is_help_needed
+router.put("/delete-help-needed/:id", (req, res, next) => {
+  const id = req.params.id;
+  console.log("diese ID", id);
+  req.db.query(
+    "UPDATE questions SET is_help_needed = 0 WHERE id = ?",
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        return next(error);
+      }
+      res.sendStatus(204);
+    }
+  );
+});
+
 // POST-Anfrage zum Erstellen einer neuen Frage und Antworten
 router.post("/create-question", (req, res, next) => {
   const { question_text, module_name, answers } = req.body;
