@@ -32,7 +32,13 @@ const certificate = fs.readFileSync("./config/server.cert", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Erlaubt alle Domains
+    methods: ["GET", "POST", "PUT", "DELETE"], // Erlaubte Methoden
+    allowedHeaders: ["Content-Type", "Authorization"], // Erlaubte Header
+  })
+);
 app.use(bodyParser.json());
 //app.use(morgan("dev")); // optional: für Anfrageprotokollierung
 
