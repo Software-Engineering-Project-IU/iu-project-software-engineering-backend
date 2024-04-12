@@ -12,6 +12,8 @@
  */
 
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 //const morgan = require("morgan");
@@ -22,7 +24,12 @@ const quizRoutes = require("./routes/quizRoutes");
 const helpRequestRoutes = require("./routes/helpRequestRoutes");
 
 const app = express();
-const port = 3001;
+// const port = 3001;
+
+// SSL/TLS Zertifikate einlesen
+const privateKey = fs.readFileSync("server.key", "utf8");
+const certificate = fs.readFileSync("server.cert", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 
 // Middleware
 app.use(cors());
@@ -66,7 +73,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-// Starten des Servers
-app.listen(port, () => {
-  console.log(`Server läuft auf http://localhost:${port}`);
+// HTTPS Server starten
+https.createServer(credentials, app).listen(443, () => {
+  console.log("Server läuft auf https://localhost:443");
 });
