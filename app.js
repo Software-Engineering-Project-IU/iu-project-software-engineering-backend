@@ -27,8 +27,8 @@ const app = express();
 // const port = 3001;
 
 // SSL/TLS Zertifikate einlesen
-const privateKey = fs.readFileSync("server.key", "utf8");
-const certificate = fs.readFileSync("server.cert", "utf8");
+const privateKey = fs.readFileSync("./config/server.key", "utf8");
+const certificate = fs.readFileSync("./config/server.cert", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
 // Middleware
