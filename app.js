@@ -12,8 +12,6 @@
  */
 
 const express = require("express");
-const https = require("https");
-const fs = require("fs");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 //const morgan = require("morgan");
@@ -24,21 +22,10 @@ const quizRoutes = require("./routes/quizRoutes");
 const helpRequestRoutes = require("./routes/helpRequestRoutes");
 
 const app = express();
-// const port = 3001;
-
-// SSL/TLS Zertifikate einlesen
-const privateKey = fs.readFileSync("./config/server.key", "utf8");
-const certificate = fs.readFileSync("./config/server.cert", "utf8");
-const credentials = { key: privateKey, cert: certificate };
+const port = 3001;
 
 // Middleware
-app.use(
-  cors({
-    origin: "*", // Erlaubt alle Domains
-    methods: ["GET", "POST", "PUT", "DELETE"], // Erlaubte Methoden
-    allowedHeaders: ["Content-Type", "Authorization"], // Erlaubte Header
-  })
-);
+app.use(cors());
 app.use(bodyParser.json());
 //app.use(morgan("dev")); // optional: für Anfrageprotokollierung
 
@@ -79,7 +66,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-// HTTPS Server starten
-https.createServer(credentials, app).listen(443, () => {
-  console.log("Server läuft auf https://localhost:443");
+// Starten des Servers
+app.listen(port, () => {
+  console.log(`Server läuft auf http://localhost:${port}`);
 });
